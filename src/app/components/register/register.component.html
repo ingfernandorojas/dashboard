@@ -1,0 +1,91 @@
+<div class="form-body text-center">
+    <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <img class="mb-4" src="../../../assets/logo.svg" alt="logo" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Registro</h1>
+        
+        <label for="inputName" class="sr-only">Nombre</label>
+        <input 
+        type="text" 
+        formControlName="name" 
+        id="inputName" 
+        class="form-control" 
+        placeholder="Nombre" 
+        [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+        autocomplete="off"
+        autofocus>
+
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">El nombre es requerido</div>
+        </div>
+        <br>
+
+        <label for="inputName" class="sr-only">Apellido</label>
+        <input 
+        type="text" 
+        formControlName="lastname" 
+        id="inputLastName" 
+        class="form-control" 
+        placeholder="Apellido" 
+        [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }"
+        autocomplete="off"
+        >
+
+        <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+            <div *ngIf="f.lastname.errors.required">El apellido es requerido</div>
+        </div>
+        <br>
+
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input 
+        type="email" 
+        formControlName="email" 
+        id="inputEmail" 
+        class="form-control" 
+        placeholder="Email" 
+        [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+        autocomplete="off"
+        >
+
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">El email es requerido</div>
+          <div *ngIf="f.email.errors.email">El email debe ser válido</div>
+        </div>
+
+        <br>
+        
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input 
+        type="password" 
+        formControlName="password" 
+        id="inputPassword" 
+        class="form-control" 
+        placeholder="Contraseña"
+        [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+        >
+
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">La contraseña es requerida</div>
+          <div *ngIf="f.password.errors.minlenght">La contraseña debe tener por lo menos 6 caracteres</div>
+        </div>
+        
+        <br>
+        <div class="custom-control custom-checkbox mb-3">
+            <input 
+            type="checkbox" 
+            formControlName="terms"
+            class="custom-control-input" 
+            id="terms"
+            [ngClass]="{ 'is-invalid': submitted && f.terms.errors }"
+            >
+            <label class="custom-control-label" for="terms">Acepto los términos y condiciones</label>
+            <div *ngIf="submitted && f.terms.errors" class="invalid-feedback">
+                <div *ngIf="f.terms.errors">Debes aceptar los términos y condiciones</div>
+              </div>
+          </div>
+        
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Registrarse</button>
+        </div>
+        <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+    </form>
+</div>
