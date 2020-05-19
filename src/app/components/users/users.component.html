@@ -3,165 +3,32 @@
 <div class="row">
     <div class="col-lg-5">
         
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            
           
     </div>
     <div class="col-lg-7">
-        <table datatable class="table row-border hover">
-            <thead class="thead-dark">
+        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="table row-border hover">
+            <thead>
               <tr>
-                <th>ID</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>ID</th>
-                <th>First name</th>
-                <th>Last name</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>editar</th>
+                <th>eliminar</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-                <td>1</td>
-                <td>Foo</td>
-                <td>Bar</td>
-              </tr>
-              
+                <tr *ngFor="let item of tabla">
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.apellido }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.role }}</td>
+                  <td><i class="fas fa-edit"></i></td>
+                  <td><i class="fas fa-trash-alt"></i></td>
+                </tr>
             </tbody>
+
         </table>
     </div>
 </div>
