@@ -4,7 +4,7 @@
     <div class="col-lg-5">
         
       <div class="form-body text-center">
-        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit();">
   
             <h1 class="h3 mb-3 font-weight-normal">Registro</h1>
             
@@ -80,7 +80,7 @@
               formControlName="role"
               [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
               >
-                <option value="" selected disabled>Nivel de usuario</option>
+                <option value="" disabled>Nivel de usuario</option>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
               </select>
@@ -93,7 +93,8 @@
             <br>
             
             <div class="form-group">
-              <button type="submit" class="btn btn-primary">Registrar</button>
+              <button type="submit" id="submit" class="btn btn-primary btn-lg">Registrar</button>
+              <button type="button" (click)="resetForm(registerForm)" class="btn btn-secondary btn-lg">Cancelar</button>
             </div>
             
         </form>
@@ -101,7 +102,7 @@
           
     </div>
     <div class="col-lg-7">
-        <table class="table row-border hover text-center">
+        <table class="table row-border hover text-center table-responsive">
             <thead>
               <tr>
                 <th>#</th>
@@ -120,8 +121,8 @@
                   <td>{{ item.apellido }}</td>
                   <td>{{ item.email }}</td>
                   <td>{{ item.role }}</td>
-                  <td><i class="fas fa-edit"></i></td>
-                  <td><i class="fas fa-trash-alt"></i></td>
+                  <td><i (click)="edit(item.username)" class="fas fa-edit fa-2x"></i></td>
+                  <td><i (click)="delete(item.username)" class="fas fa-trash-alt fa-2x"></i></td>
                 </tr>
             </tbody>
             

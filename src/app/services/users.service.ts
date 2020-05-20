@@ -18,13 +18,20 @@ export class UsersService {
   registerUser(nombre, apellido, email, password, role){
     const url_api = 'http://localhost:3000/user/admin/registerUser';
     return this.http
-    .post<Users>(url_api, {
+    .post(url_api, {
       nombre:nombre, 
       apellido:apellido, 
       email:email, 
       password:password,
       role: role
     }, this.options);
+  }
+
+  deleteUser(username){
+
+    const url_api = 'http://localhost:3000/user/admin/deleteUser/'+username;
+    return this.http.delete(url_api, this.options);
+
   }
 
   getAllUsers(){

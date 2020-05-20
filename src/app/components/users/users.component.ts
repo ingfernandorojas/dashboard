@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { UsersService } from '../../services/users.service';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
+
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-users',
@@ -13,11 +15,10 @@ export class UsersComponent implements OnInit {
 
   constructor(private Users: UsersService, private formBuilder: FormBuilder, private register: UsersService) { }
   
-
   
   tabla: any[] = [];
   page = 1;
-  pageSize = 10;
+  pageSize = 4;
   
 
   registerForm: FormGroup;
@@ -33,7 +34,6 @@ export class UsersComponent implements OnInit {
       role: ['',[Validators.required]]
     });
     this.showData();
-    
   }
 
   get f() { return this.registerForm.controls; }
@@ -65,8 +65,8 @@ export class UsersComponent implements OnInit {
     )
 
     
-    this.showData()
-
+    this.showData();
+    this.resetForm(this.registerForm);
   }
 
   showData(){
@@ -74,12 +74,57 @@ export class UsersComponent implements OnInit {
     this.Users.getAllUsers()
               .subscribe(
                 data => {
-                  this.tabla = data["data"];
-                  
+                  this.tabla = data["data"];    
                 },
-                error => {console.error(error)}
+                  error => {console.error(error)}
               )        
 
   }
 
+  resetForm(formGroup: FormGroup) {
+    let control: AbstractControl = null;
+    formGroup.reset();
+    formGroup.markAsUntouched();
+    Object.keys(formGroup.controls).forEach((name) => {
+      control = formGroup.controls[name];
+
+      // Al hacer reset, el select queda en blanco
+      if(name == 'role'){
+        formGroup.controls['role'].setValue('');
+      }
+      // Esto lo soluciona
+
+      control.setErrors(null);
+    });
+  }
+
+  edit(username){
+    alert(username)
+  }
+
+  delete(username){
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Esta acción no se puede revertir",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire(
+          '(Eliminado',
+          'El usuario ha sido eliminado',
+          'success'
+        )
+      }
+    })
+    
+  }
+
+
 }
+
+

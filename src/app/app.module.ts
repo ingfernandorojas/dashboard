@@ -16,6 +16,7 @@ import { AccountComponent } from './components/account/account.component';
 import { UsersComponent } from './components/users/users.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProductsComponent } from './components/products/products.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TopComponent,
     HomeComponent,
     AccountComponent,
-    UsersComponent
+    UsersComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
