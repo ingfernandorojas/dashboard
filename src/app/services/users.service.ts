@@ -9,28 +9,26 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  registerUser(nombre, apellido, username, email, password, role){
+  token = localStorage.getItem('token');
+  headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      'token': this.token });
+  options = { headers: this.headers }; 
+
+  registerUser(nombre, apellido, email, password, role){
     const url_api = 'http://localhost:3000/user/admin/registerUser';
     return this.http
     .post<Users>(url_api, {
       nombre:nombre, 
-      apellido:apellido,
-      username:username, 
+      apellido:apellido, 
       email:email, 
       password:password,
       role: role
-    }
-    );
+    }, this.options);
   }
 
   getAllUsers(){
-
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'token': token });
-    let options = { headers: headers }; 
     const url_api = 'http://localhost:3000/user/admin/getAllUsers';
-    return this.http.get(url_api, options);
+    return this.http.get(url_api, this.options);
   }
 }

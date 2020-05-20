@@ -3,13 +3,108 @@
 <div class="row">
     <div class="col-lg-5">
         
+      <div class="form-body text-center">
+        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  
+            <h1 class="h3 mb-3 font-weight-normal">Registro</h1>
             
+            <label for="inputName" class="sr-only">Nombre</label>
+            <input 
+            type="text" 
+            formControlName="name" 
+            id="inputName" 
+            class="form-control" 
+            placeholder="Nombre" 
+            [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required">El nombre es requerido</div>
+            </div>
+            <br>
+    
+            <label for="inputName" class="sr-only">Apellido</label>
+            <input 
+            type="text" 
+            formControlName="lastname" 
+            id="inputLastName" 
+            class="form-control" 
+            placeholder="Apellido" 
+            [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }"
+            autocomplete="off"
+            >
+    
+            <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+                <div *ngIf="f.lastname.errors.required">El apellido es requerido</div>
+            </div>
+            <br>
+    
+            <label for="inputEmail" class="sr-only">Email</label>
+            <input 
+            type="email" 
+            formControlName="email" 
+            id="inputEmail" 
+            class="form-control" 
+            placeholder="Email" 
+            [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+            autocomplete="off"
+            >
+    
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">El email es requerido</div>
+              <div *ngIf="f.email.errors.email">El email debe ser válido</div>
+            </div>
+    
+            <br>
+            
+            <label for="inputPassword" class="sr-only">Contraseña</label>
+            <input 
+            type="password" 
+            formControlName="password" 
+            id="inputPassword" 
+            class="form-control" 
+            placeholder="Contraseña"
+            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+            >
+    
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">La contraseña es requerida</div>
+              <div *ngIf="f.password.errors.minlenght">La contraseña debe tener por lo menos 6 caracteres</div>
+            </div>
+            
+            <br>
+            <div class="form-group">
+              <select 
+              class="form-control" 
+              formControlName="role"
+              [ngClass]="{ 'is-invalid': submitted && f.role.errors }"
+              >
+                <option value="" selected disabled>Nivel de usuario</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div *ngIf="submitted && f.role.errors" class="invalid-feedback">
+              <div *ngIf="f.role.errors.required">El nivel de permiso es requerido</div>
+            </div>
+
+            <br>
+            
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+            
+        </form>
+    </div>
           
     </div>
     <div class="col-lg-7">
-        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"  class="table row-border hover">
+        <table class="table row-border hover text-center">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>Email</th>
@@ -18,8 +113,9 @@
                 <th>eliminar</th>
               </tr>
             </thead>
-            <tbody>
-                <tr *ngFor="let item of tabla">
+            <tbody id="tbody">
+                <tr *ngFor="let item of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index ">
+                  <td>{{ i+1 }}</td>
                   <td>{{ item.nombre }}</td>
                   <td>{{ item.apellido }}</td>
                   <td>{{ item.email }}</td>
@@ -28,8 +124,16 @@
                   <td><i class="fas fa-trash-alt"></i></td>
                 </tr>
             </tbody>
-
+            
         </table>
+
+        <div class="row justify-content-center">
+          <ngb-pagination
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="tabla.length"></ngb-pagination>
+        </div>
+
     </div>
 </div>
   

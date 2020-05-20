@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { UsersService } from '../../services/users.service';
-import { Subject } from 'rxjs';
-import { Users } from 'src/app/models/users';
-
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -12,26 +10,63 @@ import { Users } from 'src/app/models/users';
 })
 export class UsersComponent implements OnInit {
 
-  dtOptions: DataTables.Settings = {};
-  tabla: any[] = [];
-  dtTrigger = new Subject();
-  
-  constructor(private Users: UsersService) { }
 
+  constructor(private Users: UsersService, private formBuilder: FormBuilder, private register: UsersService) { }
+  
+
+  
+  tabla: any[] = [];
+  page = 1;
+  pageSize = 10;
+  
+
+  registerForm: FormGroup;
+  submitted = false;
 
   ngOnInit(): void {
 
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 2
-    };
-  
-    this.showData()
+    this.registerForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['',[Validators.required]]
+    });
+    this.showData();
+    
   }
 
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+  get f() { return this.registerForm.controls; }
+
+
+  
+ 
+  onSubmit() {
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
+        return false;
+    }
+
+    this.register.registerUser(
+      this.registerForm.controls['name'].value,
+      this.registerForm.controls['lastname'].value,
+      this.registerForm.controls['email'].value,
+      this.registerForm.controls['password'].value,
+      this.registerForm.controls['role'].value
+    ).subscribe(
+      data => {
+        console.log()
+      },
+      error => {
+        console.error(error)
+      }
+    )
+
+    
+    this.showData()
+
   }
 
   showData(){
@@ -39,15 +74,11 @@ export class UsersComponent implements OnInit {
     this.Users.getAllUsers()
               .subscribe(
                 data => {
-                  
                   this.tabla = data["data"];
-                  this.dtTrigger.next();
                   
                 },
                 error => {console.error(error)}
-              )
-
-              
+              )        
 
   }
 

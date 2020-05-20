@@ -55,7 +55,6 @@ export class RegisterComponent implements OnInit {
       'user'+this.makeid(5),
       this.registerForm.controls['email'].value,
       this.registerForm.controls['password'].value,
-      'user'
     ).subscribe(
       data => {
         console.log(data['data']['nombre'])
