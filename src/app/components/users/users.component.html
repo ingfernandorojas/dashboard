@@ -1,7 +1,7 @@
 <br>
 
 <div class="row">
-    <div class="col-lg-5">
+    <div class="col-lg-4">
         
       <div class="form-body text-center">
         <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit();">
@@ -93,7 +93,7 @@
             <br>
             
             <div class="form-group">
-              <button type="submit" id="submit" class="btn btn-primary btn-lg">Registrar</button>
+              <button type="submit" id="submit" class="btn btn-primary btn-lg">{{buttonText}}</button>
               <button type="button" (click)="resetForm(registerForm)" class="btn btn-secondary btn-lg">Cancelar</button>
             </div>
             
@@ -101,8 +101,15 @@
     </div>
           
     </div>
-    <div class="col-lg-7">
-        <table class="table row-border hover text-center table-responsive">
+    <div class="col-lg-8">
+
+      <form>
+        <div class="form-group form-inline">
+            Buscar: <input class="form-control ml-2" type="text" id="search" (keyup)="buscar($event)"/>
+        </div>
+      </form>
+       
+        <table id="myTable" class="table row-border hover text-center table-responsive">
             <thead>
               <tr>
                 <th>#</th>
@@ -116,6 +123,7 @@
             </thead>
             <tbody id="tbody">
                 <tr *ngFor="let item of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index ">
+                  <td style="display: none;">{{item.nombre}} {{ item.nombre }} {{ item.email }} {{ item.role }}</td>
                   <td>{{ i+1 }}</td>
                   <td>{{ item.nombre }}</td>
                   <td>{{ item.apellido }}</td>

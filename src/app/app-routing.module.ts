@@ -6,6 +6,14 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
 import { UsersComponent } from './components/users/users.component';
 import { ProductsComponent } from './components/products/products.component';
+import { SellComponent } from './components/sell/sell.component';
+
+import { 
+  AuthGuardService as AuthGuard 
+} from './auth/auth-guard.service';
+import { 
+  RoleGuardService as RoleGuard 
+} from './auth/role-guard.service'
 
 
 const routes: Routes = [
@@ -15,10 +23,11 @@ const routes: Routes = [
     {path: '', component: HomeComponent},
     {path: 'products', component: ProductsComponent},
     {path: 'users', component: UsersComponent}
-  ]},
+  ],canActivate:[RoleGuard],data:{expectedRole:'admin'}},
 
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
+  {path: 'sell', component: SellComponent, canActivate:[RoleGuard],data:{expectedRole:'user'}}
 ];
 
 @NgModule({

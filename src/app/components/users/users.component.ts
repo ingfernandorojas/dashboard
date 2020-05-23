@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { UsersService } from '../../services/users.service';
 import { Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
@@ -12,16 +12,19 @@ import Swal from 'sweetalert2'
 })
 export class UsersComponent implements OnInit {
 
+  constructor(private Users: UsersService, 
+    private formBuilder: FormBuilder, 
+    private register: UsersService,
+    ) { }
 
-  constructor(private Users: UsersService, private formBuilder: FormBuilder, private register: UsersService) { }
-  
-  
   tabla: any[] = [];
   page = 1;
   pageSize = 4;
-  
 
   registerForm: FormGroup;
+  buttonText = "Registrar";
+  isUpdate = false;
+  username = "";
   submitted = false;
 
   ngOnInit(): void {
@@ -37,8 +40,6 @@ export class UsersComponent implements OnInit {
   }
 
   get f() { return this.registerForm.controls; }
-
-
   
  
   onSubmit() {
@@ -49,20 +50,60 @@ export class UsersComponent implements OnInit {
         return false;
     }
 
-    this.register.registerUser(
-      this.registerForm.controls['name'].value,
-      this.registerForm.controls['lastname'].value,
-      this.registerForm.controls['email'].value,
-      this.registerForm.controls['password'].value,
-      this.registerForm.controls['role'].value
-    ).subscribe(
-      data => {
-        console.log()
-      },
-      error => {
-        console.error(error)
-      }
-    )
+    if(this.isUpdate){
+
+      this.register.updateUser(
+        this.registerForm.controls['name'].value,
+        this.registerForm.controls['lastname'].value,
+        this.registerForm.controls['email'].value,
+        this.registerForm.controls['password'].value,
+        this.registerForm.controls['role'].value,
+        this.username
+      ).subscribe(
+        data => {
+          Swal.fire(
+            'Correcto',
+             'El usuario ha sido actualizado correctamente',
+            'success'
+          )
+        },
+        error => {
+          console.error(
+            Swal.fire(
+              'Error',
+               error['statusText'],
+              'error'
+            )
+          )
+        }
+      );
+
+    }else{
+      this.register.registerUser(
+        this.registerForm.controls['name'].value,
+        this.registerForm.controls['lastname'].value,
+        this.registerForm.controls['email'].value,
+        this.registerForm.controls['password'].value,
+        this.registerForm.controls['role'].value
+      ).subscribe(
+        data => {
+          Swal.fire(
+            'Correcto',
+             'El usuario ha sido añadido correctamente',
+            'success'
+          )
+        },
+        error => {
+          console.error(
+            Swal.fire(
+              'Error',
+               error['statusText'],
+              'error'
+            )
+          )
+        }
+      );
+    }
 
     
     this.showData();
@@ -76,12 +117,21 @@ export class UsersComponent implements OnInit {
                 data => {
                   this.tabla = data["data"];    
                 },
-                  error => {console.error(error)}
+                  error => {
+                    Swal.fire(
+                      'Error',
+                       error['statusText'],
+                      'error'
+                    )
+                  }
               )        
 
   }
 
   resetForm(formGroup: FormGroup) {
+    this.buttonText = "Registrar";
+    this.isUpdate = false;
+    this.username = '';
     let control: AbstractControl = null;
     formGroup.reset();
     formGroup.markAsUntouched();
@@ -96,10 +146,29 @@ export class UsersComponent implements OnInit {
 
       control.setErrors(null);
     });
+
   }
 
   edit(username){
-    alert(username)
+   
+    this.buttonText = "Actualizar";
+    this.isUpdate = true;
+    this.username = username;
+
+    for(let i = 0; i < this.tabla.length; i++){
+
+      if(this.tabla[i]['username'] == username){
+
+        this.registerForm.controls['name'].setValue(this.tabla[i]['nombre']);
+        this.registerForm.controls['lastname'].setValue(this.tabla[i]['apellido']);
+        this.registerForm.controls['email'].setValue(this.tabla[i]['email']);
+        this.registerForm.controls['role'].setValue(this.tabla[i]['role']);
+        return false;
+
+      }
+
+    }
+
   }
 
   delete(username){
@@ -114,13 +183,52 @@ export class UsersComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
       if (result.value) {
-        Swal.fire(
-          '(Eliminado',
-          'El usuario ha sido eliminado',
-          'success'
-        )
+        this.Users.deleteUser(username)
+                  .subscribe(
+                    data => {
+                      Swal.fire(
+                        'Eliminado',
+                        'El usuario ha sido eliminado',
+                        'success'
+                      )
+                      this.showData();
+                    },
+                    error => {
+                      Swal.fire(
+                        'Error',
+                         error['statusText'],
+                        'error'
+                      )
+                      
+                    }
+                  )
+        
       }
     })
+    
+  }
+
+  buscar(event: KeyboardEvent){
+
+    // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
     
   }
 
