@@ -1,1 +1,167 @@
-<p>products works!</p>
+<br>
+
+<div class="row">
+    <div class="col-lg-4">
+        
+      <div class="form-body text-center">
+        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onSubmit();">
+  
+            <h1 class="h3 mb-3 font-weight-normal">Registro</h1>
+            
+            <label for="inputidproducto" class="sr-only">Codigo</label>
+            <input 
+            type="text" 
+            formControlName="idproducto" 
+            id="inputidproducto" 
+            class="form-control" 
+            placeholder="Codigo de barras" 
+            [ngClass]="{ 'is-invalid': submitted && f.idproducto.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.idproducto.errors" class="invalid-feedback">
+                <div *ngIf="f.idproducto.errors.required">El codigo de barras es requerido</div>
+            </div>
+            <br>
+
+            <label for="inputnombre" class="sr-only">Nombre</label>
+            <input 
+            type="text" 
+            formControlName="nombre" 
+            id="inputnombre" 
+            class="form-control" 
+            placeholder="Nombre" 
+            [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                <div *ngIf="f.nombre.errors.required">El nombre es requerido</div>
+            </div>
+            <br>
+
+            <label for="inputstock" class="sr-only">Stock</label>
+            <input 
+            type="text" 
+            formControlName="stock" 
+            id="inputstock" 
+            class="form-control" 
+            placeholder="Stock" 
+            [ngClass]="{ 'is-invalid': submitted && f.stock.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.stock.errors" class="invalid-feedback">
+                <div *ngIf="f.stock.errors.required">El stock es requerido</div>
+            </div>
+            <br>
+
+            <label for="inputcosto" class="sr-only">Costo</label>
+            <input 
+            type="text" 
+            formControlName="costo" 
+            id="inputcosto" 
+            class="form-control" 
+            placeholder="Costo" 
+            [ngClass]="{ 'is-invalid': submitted && f.costo.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.costo.errors" class="invalid-feedback">
+                <div *ngIf="f.costo.errors.required">El costo es requerido</div>
+            </div>
+            <br>
+
+            <label for="inputprecio" class="sr-only">Precio</label>
+            <input 
+            type="text" 
+            formControlName="precio" 
+            id="inputprecio" 
+            class="form-control" 
+            placeholder="Precio" 
+            [ngClass]="{ 'is-invalid': submitted && f.precio.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.precio.errors" class="invalid-feedback">
+                <div *ngIf="f.precio.errors.required">El precio es requerido</div>
+            </div>
+            <br>
+
+            <label for="inputiva" class="sr-only">IVA</label>
+            <input 
+            type="text" 
+            formControlName="iva" 
+            id="inputiva" 
+            class="form-control" 
+            placeholder="IVA" 
+            [ngClass]="{ 'is-invalid': submitted && f.iva.errors }"
+            autocomplete="off"
+            autofocus>
+    
+            <div *ngIf="submitted && f.iva.errors" class="invalid-feedback">
+                <div *ngIf="f.iva.errors.required">El IVA es requerido</div>
+            </div>
+            
+            <br>
+            
+            <div class="form-group">
+              <button type="submit" id="submit" class="btn btn-primary btn-lg">{{buttonText}}</button>
+              <button type="button" (click)="resetForm(registerForm)" class="btn btn-secondary btn-lg">Cancelar</button>
+            </div>
+            
+        </form>
+    </div>
+          
+    </div>
+    <div class="col-lg-8">
+
+      <form>
+        <div class="form-group form-inline">
+            Buscar: <input class="form-control ml-2" type="text" id="search" (keyup)="buscar($event)"/>
+            &nbsp;{{isSearch}}
+        </div>
+      </form>
+       
+        <table id="myTable" class="table row-border hover text-center table-responsive">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+                <th>Costo</th>
+                <th>Precio</th>
+                <th>IVA</th>
+                <th>editar</th>
+                <th>eliminar</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr *ngFor="let item of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index ">
+                  <td style="display: none;">{{item.idproducto}} {{ item.nombre }} {{ item.stock }} {{ item.costo }} {{ item.precio }} {{ item.iva }}</td>
+                  <td>{{ i+1 }}</td>
+                  <td>{{item.idproducto}}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.stock }}</td>
+                  <td>{{ item.costo }}</td>
+                  <td>{{ item.precio }}</td>
+                  <td>{{ item.iva}}</td>
+                  <td><i (click)="edit(item.idproducto)" class="fas fa-edit fa-2x"></i></td>
+                  <td><i (click)="delete(item.idproducto)" class="fas fa-trash-alt fa-2x"></i></td>
+                </tr>
+            </tbody>
+            
+        </table>
+
+        <div *ngIf="showPagination" class="row justify-content-center">
+          <ngb-pagination
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="tabla.length"></ngb-pagination>
+        </div>
+
+    </div>
+</div>
+  
+  

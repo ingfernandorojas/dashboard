@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
+import { Router } from '@angular/router';
+
+
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-top',
@@ -8,7 +13,7 @@ import * as $ from 'jquery';
 })
 export class TopComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
 
@@ -17,6 +22,24 @@ export class TopComponent implements OnInit {
       $("#wrapper").toggleClass("toggled");
     });
 
+  }
+
+  logout(){
+    Swal.fire({
+      title: 'Mensaje',
+      text: "¿Deseas cerrar sesión?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+      }
+    })
   }
 
 }

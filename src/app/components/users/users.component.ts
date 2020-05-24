@@ -12,14 +12,15 @@ import Swal from 'sweetalert2'
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private Users: UsersService, 
+  constructor( 
     private formBuilder: FormBuilder, 
     private register: UsersService,
     ) { }
 
   tabla: any[] = [];
   page = 1;
-  pageSize = 4;
+  pageSize = 5;
+  isSearch = "";
 
   registerForm: FormGroup;
   buttonText = "Registrar";
@@ -36,7 +37,7 @@ export class UsersComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['',[Validators.required]]
     });
-    this.showData();
+    this.showData('nosearch');
   }
 
   get f() { return this.registerForm.controls; }
@@ -106,13 +107,13 @@ export class UsersComponent implements OnInit {
     }
 
     
-    this.showData();
+    this.showData('nosearch');
     this.resetForm(this.registerForm);
   }
 
-  showData(){
+  showData(search){
 
-    this.Users.getAllUsers()
+    this.register.getAllUsers(search)
               .subscribe(
                 data => {
                   this.tabla = data["data"];    
@@ -180,10 +181,11 @@ export class UsersComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar'
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
-        this.Users.deleteUser(username)
+        this.register.deleteUser(username)
                   .subscribe(
                     data => {
                       Swal.fire(
@@ -191,7 +193,7 @@ export class UsersComponent implements OnInit {
                         'El usuario ha sido eliminado',
                         'success'
                       )
-                      this.showData();
+                      this.showData('nosearch');
                     },
                     error => {
                       Swal.fire(
@@ -211,24 +213,21 @@ export class UsersComponent implements OnInit {
   buscar(event: KeyboardEvent){
 
     // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("search");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+    var input, filter;
+    input = document.getElementById("search");
+    filter = input.value;
+    if(filter == ""){
+      filter = "nosearch"
     }
-  }
+    this.isSearch = "Buscando";
+
+    this.register.getAllUsers(filter)
+              .subscribe(
+                data => {
+                  this.tabla = data["data"]; 
+                  this.isSearch = "";   
+                }
+              )
     
   }
 

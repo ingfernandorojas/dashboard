@@ -5,10 +5,9 @@ import { Config } from './config';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class ProductsService {
 
   constructor(private http: HttpClient) { }
-
   api = new Config();
 
   token = "";
@@ -23,43 +22,44 @@ export class UsersService {
     this.options = { headers: this.headers }; 
   }
 
-  registerUser(nombre, apellido, email, password, role){
+  registerProduct(idproducto,nombre, stock, costo, precio, iva){
     this.setHeaders();
-    const url_api = this.api.url_api+'/user/admin/registerUser';
+    const url_api = this.api.url_api+'/product/admin/registerProduct';
     return this.http
     .post(url_api, {
+      idproducto: idproducto,
       nombre:nombre, 
-      apellido:apellido, 
-      email:email, 
-      password:password,
-      role: role
+      stock:stock, 
+      costo:costo, 
+      precio:precio,
+      iva: iva
     }, this.options);
   }
 
-  updateUser(nombre, apellido, email, password, role, username){
+  updateProduct(idproducto,nombre, stock, costo, precio, iva){
     this.setHeaders();
-    const url_api = this.api.url_api+'/user/admin/updateUser';
+    const url_api = this.api.url_api+'/product/admin/updateProduct';
     return this.http
     .put(url_api, {
+      idproducto: idproducto,
       nombre:nombre, 
-      apellido:apellido, 
-      email:email, 
-      password:password,
-      role: role,
-      username:username
+      stock:stock, 
+      costo:costo, 
+      precio:precio,
+      iva: iva
     }, this.options);
   }
 
-  deleteUser(username){
+  deleteProduct(idproducto){
     this.setHeaders();
-    const url_api = this.api.url_api+'/user/admin/deleteUser/'+username;
+    const url_api = this.api.url_api+'/product/admin/deleteProduct/'+idproducto;
     return this.http.delete(url_api, this.options);
 
   }
 
-  getAllUsers(search){
+  getAllProducts(search){
     this.setHeaders();
-    const url_api = this.api.url_api+'/user/admin/getAllUsers/'+search;
+    const url_api = this.api.url_api+'/product/admin/getAllProducts/'+search;
 
     return this.http.get(url_api, this.options);
   }
