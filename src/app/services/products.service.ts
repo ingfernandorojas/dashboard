@@ -63,4 +63,11 @@ export class ProductsService {
 
     return this.http.get(url_api, this.options);
   }
+
+  getOneProduct(search){
+    this.setHeaders();
+    const url_api = this.api.url_api+'/product/user/getOneProduct/'+search;
+
+    return this.http.get(url_api, this.options);
+  }
 }

@@ -1,1 +1,63 @@
-<p>sell works!</p>
+<app-top-sell></app-top-sell>
+<div class="container-fluid">
+    <div class="container">
+        <div class="row" id="venta">
+            <!-- formulario -->
+            <div class="col-lg-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1"><i class="fas fa-barcode"></i></span>
+                    </div>
+                    <input id="codigo" (keypress)="isNumber($event)" (keyup)="codigo($event)" type="text" class="form-control" placeholder="Código" aria-label="Código" aria-describedby="basic-addon1" autofocus>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon2">₲</span>
+                    </div>
+                    <input id="efectivo" (keypress)="isNumber($event)" (keyup)="calcularVuelto($event)" type="text" class="form-control" placeholder="Efectivo" aria-label="efectivo" aria-describedby="basic-addon2" autofocus>
+                </div>
+                <h3>Total: <span class="text-success">{{sumaTotal}}</span></h3>
+                <h3>Vuelto: <span class="text-info">{{vuelto}}</span></h3>
+                <div class="row justify-content-center">
+                    <button type="button" id="ventaButton" class="btn btn-primary btn-lg">Vender</button>
+                    <button type="button" (click)="cancelButton()" class="btn btn-secondary btn-lg">Cancelar</button>
+                </div>
+                <br>
+            </div>
+            <!-- fin formulario -->
+            <!-- Tabla -->
+            <div class="col-lg-8">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="mensajeTabla">
+                            <td colspan="5">No hay productos</td>
+                        </tr>
+                        <tr *ngFor="let i of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;">
+                            <td>{{i.idproducto}}</td>
+                            <td>{{i.nombre}}</td>
+                            <td>{{i.precio}}</td>
+                            <td>{{i.cantidad}}</td>
+                            <td><i (click)="delete(i.idproducto)" class="fas fa-trash-alt fa-2x"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="showPagination" class="row justify-content-center">
+                    <ngb-pagination
+                          [(page)]="page"
+                          [pageSize]="pageSize"
+                          [collectionSize]="tabla.length"></ngb-pagination>
+                  </div>
+            </div>
+            <!-- Fin tabla -->
+        </div>
+    </div>
+</div>

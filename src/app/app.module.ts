@@ -18,6 +18,7 @@ import { ProductsComponent } from './components/products/products.component';
 import { SellComponent } from './components/sell/sell.component';
 
 import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
+import { TopSellComponent } from './components/shared/top-sell/top-sell.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { JwtHelperService, JWT_OPTIONS  } from '@auth0/angular-jwt';
     HomeComponent,
     UsersComponent,
     ProductsComponent,
-    SellComponent
+    SellComponent,
+    TopSellComponent
   ],
   imports: [
     BrowserModule,
