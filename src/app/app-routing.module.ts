@@ -22,7 +22,7 @@ const routes: Routes = [
   ],canActivate:[RoleGuard],data:{expectedRole:'admin'}},
 
   {path: 'login', component: LoginComponent},
-  {path: 'sell', component: SellComponent, canActivate:[RoleGuard],data:{expectedRole:'user'}}
+  {path: 'sell', component: SellComponent, canActivate:[RoleGuard],data:{expectedRole:'user' && 'admin'}}
 ];
 
 @NgModule({

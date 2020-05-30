@@ -14,10 +14,10 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon2">₲</span>
                     </div>
-                    <input id="efectivo" (keypress)="isNumber($event)" (keyup)="calcularVuelto($event)" type="text" class="form-control" placeholder="Efectivo" aria-label="efectivo" aria-describedby="basic-addon2" autofocus>
+                    <input id="efectivo" (keypress)="isNumber($event)" (keyup)="calcularVueltoOnPressKey($event)" type="text" class="form-control" placeholder="Efectivo" aria-label="efectivo" aria-describedby="basic-addon2" autofocus>
                 </div>
-                <h3>Total: <span class="text-success">{{sumaTotal}}</span></h3>
-                <h3>Vuelto: <span class="text-info">{{vuelto}}</span></h3>
+                <h3>Total: <span class="text-success">{{auxsumaTotal}}</span></h3>
+                <h3>Vuelto: <span class="text-info">{{auxVuelto}}</span></h3>
                 <div class="row justify-content-center">
                     <button type="button" id="ventaButton" class="btn btn-primary btn-lg">Vender</button>
                     <button type="button" (click)="cancelButton()" class="btn btn-secondary btn-lg">Cancelar</button>
@@ -41,12 +41,12 @@
                         <tr *ngIf="mensajeTabla">
                             <td colspan="5">No hay productos</td>
                         </tr>
-                        <tr *ngFor="let i of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;">
+                        <tr *ngFor="let i of tabla | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let j = index">
                             <td>{{i.idproducto}}</td>
                             <td>{{i.nombre}}</td>
                             <td>{{i.precio}}</td>
                             <td>{{i.cantidad}}</td>
-                            <td><i (click)="delete(i.idproducto)" class="fas fa-trash-alt fa-2x"></i></td>
+                            <td><i (click)="delete(j)" id="deleteButton" class="fas fa-trash-alt fa-2x"></i></td>
                         </tr>
                     </tbody>
                 </table>

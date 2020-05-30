@@ -5,3 +5,7 @@
 #ventaButton {
     margin-right: 1rem;
 }
+
+#deleteButton {
+    cursor: pointer;
+}
